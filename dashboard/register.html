@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shop Register</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <link rel="stylesheet" href="css/register_style.css">
+</head>
+<body class="pt-0">
+
+    <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="#">CovKart</a>
+          <ul class="navbar-nav  ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link nav_spac" href="#">About Us <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+    <div class="main">
+
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <form action="" method="POST" id="signup-form" class="signup-form">
+                        <h2 class="form-title">Create account</h2>
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="shop_name" id="name" placeholder="Shop Name"/>
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-input" name="owner_name" id="name" placeholder="Owner Name"/>
+                      </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" name="email" id="email" placeholder="Email"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-input" name="number" id="number" placeholder="Mobile Number"/>
+                        </div>
+                        <div class="form-group">
+                          <div>
+                            <div class="form-group">
+                                <select class="form-control" id="sel1">
+                                  <option disabled selected>Category</option>
+                                  <!-- Options added. Set -->
+                                  <option>Food</option>
+                                  <option>Mobile Store</option>
+                                  <option>Daily Essentials</option>
+                                  <option>Medicine</option>
+                                </select>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-input" name="owner_name" id="location" placeholder="Location"/>
+                    </div>
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
+                           
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="re_password" id="re_password" placeholder="Repeat your password"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" id="submit" class="form-submit" value="Sign up"/>
+                        </div>
+                    </form>
+                    <p class="loginhere">
+                        Already have an account ? <a href="#" class="loginhere-link">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <footer class="page-footer font-small footer_bg">
+        <div class="footer-copyright text-center  py-3"><b> Team-Hacksterz</b>
+        </div>
+    </footer>
+    <script src="js/server.js">
+    
+    </script>
+</body>
+</html>
