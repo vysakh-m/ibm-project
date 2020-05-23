@@ -34,6 +34,8 @@ router.post("/register", function (req, res) {
   };
   // specify the id of the document so you can update and delete it later
   db.insert(response, (err, data) => {
+    req.store_session.store_email = req.body.email;
+    req.store_session.store_name = result.docs[0].name;
     console.log("Insert Successfull");
     return res.json({ status: "Data Insertion Successful" });
   });
