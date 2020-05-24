@@ -21,6 +21,7 @@ router.use(
 var db = cloudant.db.use("user");
 var ud = cloudant.db.use("user_data");
 var vt = cloudant.db.use("volunteer");
+var st = cloudant.db.use("stores");
 router.get('/login',(req,res)=>{
   res.render('user_login.ejs')
 })
@@ -96,14 +97,28 @@ router.post('/login',(req,res)=>{
   })
 });
 
-router.post('/post_order',(req,res)=>{
+router.get('/category/:id',(req,res)=>{
+  var cat="";
+  if(req.params.id==1){
+    cat="Food";
+  }else if(req.params.id==2){
+    cat="Mobile Store"
+  }else if(req.params.id==3){
+    cat="Daily Essentials"
+  }else if(req.params.id==4){
+    cat="Medicine"
+  }else{
+    res.redirect('dashboard');
+  }
+  st.find({selector:{category:cat}},(err,response)=>{
+    res.render('user_category.ejs',{
+      data:response.docs
+    })
+  })
   
 })
 
-router.post('/item/:category',(req,res)=>{
 
-  
-})
 
 
 router.get("/logout", (req, res) => {

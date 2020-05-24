@@ -17,9 +17,10 @@ app.use('/user',require('./routes/user'));
 
 
 
-app.get('/', function(req,res){
+app.get('/', (req,res)=>{
   res.render('landing.ejs')
-})
+});
+
 
 app.listen(8081, function () {
   console.log("Server running at port 8081");
