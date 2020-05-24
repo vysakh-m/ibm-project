@@ -22,6 +22,10 @@ var db = cloudant.db.use("user");
 var ud = cloudant.db.use("user_data");
 var vt = cloudant.db.use("volunteer");
 var st = cloudant.db.use("stores");
+var sd = cloudant.db.use("stores_data");
+
+
+
 router.get('/login',(req,res)=>{
   res.render('user_login.ejs')
 })
@@ -119,7 +123,42 @@ router.get('/category/:id',(req,res)=>{
 })
 
 
+router.get('/shop/:id',(req,res)=>{
+  st.find({selector:{_id:req.params.id}},(err,response)=>{
+    // res.render('user_category.ejs',{
+    //   data:response.docs
+    // })
+    sd.find({selector:{email:response.docs[0].email}},(err1,response1)=>{
+      res.render('order_summary.ejs',{
+        name:response.docs[0].name,
+        data:response1.docs[0].data,
+        id:response1.docs[0]._id
+      })
+    })
 
+  })
+})
+
+router.get('/placeorder/order-success',(req,res)=>{
+  res.render('thanks.ejs')
+})
+
+router.post('/placeorder/:id',(req,res)=>{
+  sd.find({selector:{_id:req.params.id}},(err,response)=>{
+    console.log(req.body.item)
+    console.log(req.body.count)
+    response.docs[0].data.forEach(function(i){
+      if(i.item==req.body.item){
+        i.count=i.count-req.body.count;       
+      }
+    })
+    console.log("NEW VALUE")
+    sd.insert({_id:req.params.id,data:response.docs[0].data,_rev:response.docs[0]._rev},function(err,result){
+      console.log(result);
+      res.redirect('order-success')
+    })
+  })
+})
 
 router.get("/logout", (req, res) => {
   console.log(req.user_session.user_name);
