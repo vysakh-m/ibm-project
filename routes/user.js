@@ -18,6 +18,24 @@ router.use(
   })
 );
 
+router.get('/login',(req,res)=>{
+  res.render('user_login.ejs')
+})
+router.get('/register',(req,res)=>{
+  res.render('user_register.ejs')
+})
+
+router.get('/dashboard',(req,res)=>{
+  if(!req.user_session.user_email){
+    res.redirect('login')
+  }else{
+    res.render('user_dashboard.ejs',{
+      name:req.user_session.user_name
+    })
+  }
+  
+})
+
 var db = cloudant.db.use("user");
 var ud = cloudant.db.use("user_data");
 
@@ -33,7 +51,7 @@ router.post('/register',(req,res)=>{
   }
   db.find({selector:{email:req.body.email}},(err,response)=>{
     if(!isEmpty(response.docs)){
-      return res.json({status:"User already exists"});
+      res.redirect('login')
     }else{
       db.insert(data,(err,data)=>{
         req.user_session.user_email = req.body.email;
@@ -57,9 +75,9 @@ router.post('/login',(req,res)=>{
         delete response.docs[0].password;
         req.user_session.user_email = req.body.email;
         req.user_session.user_name = response.docs[0].name;
-        return res.json({data:response.docs[0],status:"Authentication Successfull"})
+        res.redirect('dashboard')
       }else{
-        return res.json({status:"Invalid Password"});
+        res.redirect('login')
       }
     }
   })
@@ -74,5 +92,17 @@ router.post('/item/:category',(req,res)=>{
   
 })
 
+
+router.get("/logout", (req, res) => {
+  console.log(req.user_session.user_name);
+  if (!req.user_session.user_name) {
+    res.redirect('login');
+  } else {
+    const user = req.user_session.user_name;
+    req.user_session.reset();
+    console.log(`Logout Successfull : ${user}`);
+    res.redirect('login');
+  }
+});
 
 module.exports=router;

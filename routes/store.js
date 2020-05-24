@@ -170,7 +170,7 @@ router.post("/additem", (req, res) => {
 router.get("/logout", (req, res) => {
   console.log(req.store_session.store_name);
   if (!req.store_session.store_name) {
-    console.log("No user logged in");
+    res.redirect('login');
   } else {
     const user = req.store_session.store_name;
     req.store_session.reset();
