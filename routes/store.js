@@ -21,7 +21,30 @@ router.use(
 var db = cloudant.db.use("stores");
 var sd = cloudant.db.use("stores_data");
 
-router.post("/register", function (req, res) {
+
+router.get('/register',(req,res)=>{
+  res.render('store_register.ejs')
+})
+router.get('/login',(req,res)=>{
+  res.render('store_login.ejs')
+})
+
+router.get('/dashboard',(req,res)=>{
+  sd.find({selector:{email:req.store_session.store_email}},(err,result)=>{
+    if(isEmpty(result.docs)){
+      console.log("Empty")
+    }else{
+      console.log(result.docs[0].data[0].item)
+      res.render('store_dashboard.ejs',{
+        name:req.store_session.store_name,
+        data:result.docs[0].data
+      })
+    }
+  })
+  
+})
+
+router.post("/register",  (req, res)=> {
   // Prepare output in JSON format
   response = {
     name: req.body.shop_name,
@@ -35,9 +58,9 @@ router.post("/register", function (req, res) {
   // specify the id of the document so you can update and delete it later
   db.insert(response, (err, data) => {
     req.store_session.store_email = req.body.email;
-    req.store_session.store_name = result.docs[0].name;
+    req.store_session.store_name = req.body.shop_name;
     console.log("Insert Successfull");
-    return res.json({ status: "Data Insertion Successful" });
+    res.redirect('dashboard')
   });
 });
 
@@ -54,11 +77,7 @@ router.post("/login", (req, res) => {
           owner_name: result.docs[0].Owner_name,
           category: result.docs[0].category,
         };
-        res.json({
-          status: "Authentication Successful",
-          validUser: true,
-          user_data: payload,
-        });
+        res.redirect('dashboard');
       } else {
         res.json({ status: "Authentication Unsuccessful", validUser: false });
       }
@@ -93,7 +112,7 @@ router.post("/additem", (req, res) => {
         };
         sd.insert(response, (err, data) => {
           console.log("Insertion Successful");
-          return res.json(response);
+          res.redirect('dashboard');
         });
       } else {
         sd.destroy(result.docs[0]._id, result.docs[0]._rev)
@@ -139,7 +158,7 @@ router.post("/additem", (req, res) => {
         console.log(stats);
         sd.insert(stats, (err, data) => {
           console.log("Updated Insertion successfull");
-          return res.json(stats);
+          res.redirect('dashboard');
         });
       }
     }
@@ -150,12 +169,11 @@ router.get("/logout", (req, res) => {
   console.log(req.store_session.store_name);
   if (!req.store_session.store_name) {
     console.log("No user logged in");
-    return res.json({ currentUser: "None" });
   } else {
     const user = req.store_session.store_name;
     req.store_session.reset();
     console.log(`Logout Successfull : ${user}`);
-    return res.json({ loggedOutUser: user });
+    res.redirect('login');
   }
 });
 

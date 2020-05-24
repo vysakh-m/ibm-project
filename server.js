@@ -3,15 +3,14 @@ const bodyParser = require("body-parser");
 
 const app        = express();
 
-
 const cloudant=require('./db/db')
 
 //Body-Parser
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(express.static("styles"));
 
+app.use(express.static("style"));
 
 app.use('/store', require('./routes/store'));
 app.use('/user',require('./routes/user'));
@@ -19,7 +18,7 @@ app.use('/user',require('./routes/user'));
 
 
 app.get('/', function(req,res){
-  res.send("Hi")
+  res.render('landing.ejs')
 })
 
 app.listen(8081, function () {
