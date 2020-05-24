@@ -32,7 +32,10 @@ router.get('/login',(req,res)=>{
 router.get('/dashboard',(req,res)=>{
   sd.find({selector:{email:req.store_session.store_email}},(err,result)=>{
     if(isEmpty(result.docs)){
-      console.log("Empty")
+      res.render('store_dashboard.ejs',{
+        name:req.store_session.store_name,
+        data:[]
+      })
     }else{
       console.log(result.docs[0].data[0].item)
       res.render('store_dashboard.ejs',{
@@ -99,7 +102,6 @@ router.post("/additem", (req, res) => {
   sd.find(
     { selector: { email: req.store_session.store_email } },
     (err, result) => {
-      console.log(result.docs);
       if (isEmpty(result.docs)) {
         response = {
           email: req.store_session.store_email,
