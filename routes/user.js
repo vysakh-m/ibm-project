@@ -18,6 +18,9 @@ router.use(
   })
 );
 
+var db = cloudant.db.use("user");
+var ud = cloudant.db.use("user_data");
+var vt = cloudant.db.use("volunteer");
 router.get('/login',(req,res)=>{
   res.render('user_login.ejs')
 })
@@ -36,8 +39,18 @@ router.get('/dashboard',(req,res)=>{
   
 })
 
-var db = cloudant.db.use("user");
-var ud = cloudant.db.use("user_data");
+router.get('/volunteer',(req,res)=>{
+  vt.find({selector:{}},(err,response)=>{
+    res.render('volunteer.ejs',{
+      data:response.docs
+    })
+  })
+})
+router.get('/map',(req,res)=>{
+  res.render('map.ejs');
+})
+
+
 
 router.post('/register',(req,res)=>{
   data={

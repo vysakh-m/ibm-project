@@ -35,6 +35,7 @@
 
             navigator.geolocation.getCurrentPosition(result => {
                 loc = result.coords;
+                console.log(loc)
                 renderMap();
             }, error => {
                 alert(error);
@@ -48,7 +49,6 @@
             });
 
             var defaultLayers = platform.createDefaultLayers();
-
             var map = new H.Map(
                 document.getElementById('mapContainer'),
                 defaultLayers.vector.normal.map,
@@ -58,11 +58,33 @@
                     pixelRatio: window.devicePixelRatio || 1
                 }
             );
+            
 
             var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
             var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+            function doit(){
+                var service = platform.getSearchService();
+                service.reverseGeocode({
+                at: '8.912896,76.627978'
+                }, (result) => {
+                result.items.forEach((item) => {
+                    // Assumption: ui is instantiated
+                    // Create an InfoBubble at the returned location with
+                    // the address as its contents:
+                    ui.addBubble(new H.ui.InfoBubble(item.position, {
+                    content: item.address.label
+                    }));
+                });
+            });
+            }
+            doit()
         }
+        // window.onload=function(){
+        //     var londonMarker = H.map.Marker({lat:8.912896, lng:76.627968});
+        //     map.addObject(londonMarker);
+        // }
         </script>
     </body>
 </html>

@@ -20,7 +20,7 @@ router.use(
 
 var db = cloudant.db.use("stores");
 var sd = cloudant.db.use("stores_data");
-
+var vt = cloudant.db.use("volunteer");
 
 router.get('/register',(req,res)=>{
   res.render('store_register.ejs')
@@ -96,6 +96,17 @@ router.get("/home", (req, res) => {
     }
   );
 });
+
+router.get('/volunteer',(req,res)=>{
+  vt.find({selector:{}},(err,response)=>{
+    res.render('volunteer_store.ejs',{
+      data:response.docs
+    })
+  })
+})
+router.get('/map',(req,res)=>{
+  res.render('map_store.ejs');
+})
 
 router.post("/additem", (req, res) => {
   var flag = 0;

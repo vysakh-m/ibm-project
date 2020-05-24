@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Map</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+        <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+      
+        <link rel="stylesheet" type="text/css" href="/css/util.css">
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+      
+          <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+      
+          <link rel="stylesheet" href="/css/register_style.css">
+        <style>
+            #mapContainer {
+                width: 500px;
+                height: 500px;
+            }
+        </style>
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="#">Home</a>
+          <ul class="navbar-nav  ml-auto mt-2 mt-lg-0">
+            <li class="nav-item ">
+              <a class="nav-link nav_spac" href="/user/dashboard">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link nav_spac" href="/user/map">Map</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link nav_spac" href="/user/volunteer">Volunteer</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav_spac" href="">About us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav_spac" href="/user/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+        <div id="mapContainer"></div>
+
+        <script>
+        const KEY = 'c1LJuR0Bl2y02PefaQ2d8PvPnBKEN8KdhAOFYR_Bgmw';
+        var loc;
+
+        document.addEventListener('DOMContentLoaded', init, false);
+
+        function init() {
+            if(!navigator.geolocation) {
+                alert("You're browser doesn't support geolocation.");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(result => {
+                loc = result.coords;
+                console.log(loc)
+                renderMap();
+            }, error => {
+                alert(error);
+            });
+
+        }
+
+        function renderMap() {
+            var platform = new H.service.Platform({
+                'apikey': KEY
+            });
+
+            var defaultLayers = platform.createDefaultLayers();
+            var map = new H.Map(
+                document.getElementById('mapContainer'),
+                defaultLayers.vector.normal.map,
+                {
+                    zoom: 12,
+                    center: { lat: loc.latitude, lng: loc.longitude },
+                    pixelRatio: window.devicePixelRatio || 1
+                }
+            );
+            
+
+            var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+            var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+            function doit(){
+                var service = platform.getSearchService();
+                service.reverseGeocode({
+                at: '8.912896,76.627178'
+                }, (result) => {
+                result.items.forEach((item) => {
+                    // Assumption: ui is instantiated
+                    // Create an InfoBubble at the returned location with
+                    // the address as its contents:
+                    ui.addBubble(new H.ui.InfoBubble(item.position, {
+                    content: item.address.label
+                    }));
+                });
+            });
+
+            service.reverseGeocode({
+                at: '8.912896,76.697178'
+                }, (result) => {
+                result.items.forEach((item) => {
+                    // Assumption: ui is instantiated
+                    // Create an InfoBubble at the returned location with
+                    // the address as its contents:
+                    ui.addBubble(new H.ui.InfoBubble(item.position, {
+                    content: item.address.label
+                    }));
+                });
+            });
+
+
+            }
+            doit()
+        }
+        // window.onload=function(){
+        //     var londonMarker = H.map.Marker({lat:8.912896, lng:76.627968});
+        //     map.addObject(londonMarker);
+        // }
+        </script>
+    </body>
+</html>
