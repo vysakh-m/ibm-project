@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
     <link rel="stylesheet" href="/css/register_style.css">
+    <link rel="stylesheet" href="/css/register_mod.css">
+    
 </head>
 <body>
   <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
@@ -40,7 +42,7 @@
               <a class="nav-link nav_spac" href="/store/volunteer">Volunteers <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item ">
-              <a class="nav-link nav_spac" href="#">About Us <span class="sr-only">(current)</span></a>
+              <a class="nav-link nav_spac" href="/store/about-us">About Us <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item ">
               <a class="nav-link nav_spac" href="/store/logout">Log out<span class="sr-only">(current)</span></a>
@@ -84,10 +86,14 @@
   </div>
   <div>
     <form action="/store/additem" method="POST">
-        <input type="text" name="item" placeholder="Enter Item name"/>
-
-        <input type="text" name="count" placeholder="Enter Quantity"/>
-        <input type="submit" name="submit" id="submit" class="form-submit" value="Submit"/>
+      <div class="flex_box">
+        <div class="input_data">
+          <input type="text" name="item" placeholder="Enter Item name"/>
+          <input type="text" name="count" placeholder="Enter Quantity"/>
+        </div>
+        <input type="submit" name="submit" id="submit" class="form-submit btn-chng" value="Submit"/>
+      </div>
+      
 
     </form>
 

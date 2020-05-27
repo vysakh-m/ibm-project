@@ -53,6 +53,10 @@ router.get('/volunteer',(req,res)=>{
 })
 router.get('/map',(req,res)=>{
   res.render('map.ejs');
+});
+
+router.get('/about-us',(req,res)=>{
+  res.render('about_us.ejs');
 })
 
 
@@ -74,7 +78,7 @@ router.post('/register',(req,res)=>{
       db.insert(data,(err,data)=>{
         req.user_session.user_email = req.body.email;
         req.user_session.user_name = req.body.name;
-        return res.json({status:"Registration Successfull"});
+        res.redirect('dashboard')
       })
     }
   })

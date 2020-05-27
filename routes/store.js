@@ -29,6 +29,10 @@ router.get('/login',(req,res)=>{
   res.render('store_login.ejs')
 })
 
+router.get('/about-us',(req,res)=>{
+  res.render('store_about_us.ejs');
+})
+
 router.get('/dashboard',(req,res)=>{
   sd.find({selector:{email:req.store_session.store_email}},(err,result)=>{
     if(isEmpty(result.docs)){
@@ -82,7 +86,7 @@ router.post("/login", (req, res) => {
         };
         res.redirect('dashboard');
       } else {
-        res.json({ status: "Authentication Unsuccessful", validUser: false });
+        res.redirect('login');
       }
     }
   });

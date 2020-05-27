@@ -1,0 +1,15 @@
+.input_data{
+  margin: 0 auto;
+}
+
+.flex_box{
+  display: flex;
+}
+
+.btn-chng{
+  width: 200px;
+}
+
+input[type=text]{
+  width: 1200px;
+}
