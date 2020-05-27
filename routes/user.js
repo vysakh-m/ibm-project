@@ -153,7 +153,7 @@ router.post('/placeorder/:id',(req,res)=>{
       }
     })
     console.log("NEW VALUE")
-    sd.insert({_id:req.params.id,data:response.docs[0].data,_rev:response.docs[0]._rev},function(err,result){
+    sd.insert({_id:req.params.id,data:response.docs[0].data,_rev:response.docs[0]._rev,email:response.docs[0].email},function(err,result){
       console.log(result);
       res.redirect('order-success')
     })
